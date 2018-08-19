@@ -1,8 +1,11 @@
 # online_exam
 An exam management system that helps you manage all your exams and your students.
 
-[Library]<br>
-
+[Libraries]<br>
+<ol>
+  <li><b>PHP Mailer</b> https://github.com/PHPMailer/PHPMailer</li>
+  <li><b>TCPDF</b> https://github.com/tecnickcom/TCPDF</li>
+</ol>
 
 [Setup]<br>
 <ol>
