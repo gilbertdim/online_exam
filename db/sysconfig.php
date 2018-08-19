@@ -1,0 +1,5 @@
+<?php
+
+DEFINE('RunType'    , 'Develop');
+
+?>
