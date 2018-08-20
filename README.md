@@ -1,10 +1,17 @@
-# online_exam
+# Online Exam System
 An exam management system that helps you manage all your exams and your students.
 
 [Libraries]<br>
 <ol>
   <li><b>PHP Mailer</b> https://github.com/PHPMailer/PHPMailer</li>
   <li><b>TCPDF</b> https://github.com/tecnickcom/TCPDF</li>
+  <li><b>Metro UI CSS</b> https://metroui.org.ua/v3/</li>
+</ol>
+
+[System Requirements]<br>
+<ol>
+  <li>PHP 5.3.5 or higher</li>
+  <li>MySQL 5.5.8 or higher</li>
 </ol>
 
 [Setup]<br>
