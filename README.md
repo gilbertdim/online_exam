@@ -1,6 +1,12 @@
 # Online Exam System
 An exam management system that helps you manage all your exams and your students.
 
+[Demo]<br>
+http://gilbertdim.000webhostapp.com/online_exam/
+Use the above link to check out this application.
+    <dd> Username : admin
+    <dd> Password : admin
+      
 [Libraries]<br>
 <ol>
   <li><b>PHP Mailer</b> https://github.com/PHPMailer/PHPMailer</li>
