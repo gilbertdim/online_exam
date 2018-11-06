@@ -73,14 +73,21 @@
                     var examid = <?php echo $ExamID; ?>;
                     var question_type = "<?php echo $QuestionType; ?>";
                     var question = $('#txtQuestion')[0].value;
-                    var option_a = $('#txtQOptionA')[0].value;
-                    var option_b = $('#txtQOptionB')[0].value;
-                    var option_c = $('#txtQOptionC')[0].value;
-                    var option_d = $('#txtQOptionD')[0].value;
+                    var option_a = '';
+                    var option_b = '';
+                    var option_c = '';
+                    var option_d = '';
+                    var question_answer = $('#txtAnswer')[0].value;
+                    
+                    <?php if($QuestionType != 'True/False') { ?>
+                        option_a = $('#txtQOptionA')[0].value;
+                        option_b = $('#txtQOptionB')[0].value;
+                        option_c = $('#txtQOptionC')[0].value;
+                        option_d = $('#txtQOptionD')[0].value;
+                    <?php } ?>
 //                    var question_options = $('#tblAnswers>tbody').find('tr').map(function(){
 //                                                return [$('td', this).map(function(){ return $(this).text();}).get()];
 //                                            }).get();
-                    var question_answer = $('#txtAnswer')[0].value;
                     
                     if (question_type == 'True/False' && (question == '' || question_answer == '')) {
                         $.Notify({
@@ -203,7 +210,177 @@
             </div>
             <?php
         } else {
-            die();
+            ?>
+            <script>
+                $('#btnSaveQuestion').click(function(){
+                    var question_id = <?php echo $id; ?>;
+                    var examid = <?php echo $ExamID; ?>;
+                    var question_type = "<?php echo $QuestionType; ?>";
+                    var question = $('#txtQuestion')[0].value;
+                    var option_a = '';
+                    var option_b = '';
+                    var option_c = '';
+                    var option_d = '';
+                    var question_answer = $('#txtAnswer')[0].value;
+                    
+                    <?php if($QuestionType != 'True/False') { ?>
+                        option_a = $('#txtQOptionA')[0].value;
+                        option_b = $('#txtQOptionB')[0].value;
+                        option_c = $('#txtQOptionC')[0].value;
+                        option_d = $('#txtQOptionD')[0].value;
+                    <?php } ?>
+                    
+                    if (question_type == 'True/False' && (question == '' || question_answer == '')) {
+                        $.Notify({
+                            caption : 'Saving Failed',
+                            content : 'Please enter Question and the correct answer.',
+                            type : 'alert',
+                            timeout : 6000
+                        });
+                    } else if (question_type != 'True/False' && (question == '' || option_a == '' || option_b == '' || option_c == '' || option_d == '' || question_answer == '')) {
+                        $.Notify({
+                            caption : 'Saving Failed',
+                            content : 'Please enter a Question, complete the Question Options and the select the Correct Answer.',
+                            type : 'alert',
+                            timeout : 6000
+                        });
+                    } else {
+                        $.post(
+                            'save_data.php', {
+                                save_question : question_id,
+                                ExamId : examid,
+                                txtQType : question_type,
+                                txtQuestion : question,
+                                txtOptionA : option_a,
+                                txtOptionB : option_b,
+                                txtOptionC : option_c,
+                                txtOptionD : option_d,
+//                                tblOption : question_options,
+                                txtAnswer : question_answer
+                            },function(data) {
+                                GenerateTableQuestion();
+                                
+                                $.Notify({
+                                    caption : 'Saving Complete',
+                                    content : 'Question was successfully saved.',
+                                    type : 'success',
+                                    timeout : 6000
+                                });
+                                
+                                metroDialog.close('#frmQuestion');
+                            }
+                        );
+                    }
+                });
+            </script>
+            <div class="cell size12">
+                <div class="flex-grid">
+                    <div class="row">
+                        <div class="cell size12">
+                            <label>Question Type : </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="cell size12">
+                            <div class="input-control full-size">
+                                <input type="text" id="txtQuestionType" readonly value="<?php echo $QuestionType; ?>">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="cell size12">
+                            <label>Question : </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="cell size12">
+                            <div class="input-control textarea full-size">
+                                <textarea id="txtQuestion" <?php if($hascode) echo 'readonly' ?>></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="<?php if($QuestionType == 'True/False') echo 'display:none;'; ?>">
+                        <div class="cell size12">
+                            <label>Choices :</label>
+                        </div>
+                    </div>
+                    <div class="row" style="<?php if($QuestionType == 'True/False') echo 'display:none;'; ?>">
+                        <div class="cell size12" id="AnswerList">
+                            <table id="tblAnswers" class="table border bordered hovered">
+                                <thead>
+                                    <th style="width: 5px">Letter</th>
+                                    <th>Description</th>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="align-center">A</td>
+                                        <td class="no-padding">
+                                        <div class="input-control no-margin textarea full-size">
+                                            <textarea id="txtQOptionA"></textarea>
+                                        </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="align-center">B</td>
+                                        <td class="no-padding">
+                                        <div class="input-control no-margin textarea full-size">
+                                            <textarea id="txtQOptionB"></textarea>
+                                        </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="align-center">C</td>
+                                        <td class="no-padding">
+                                        <div class="input-control no-margin textarea full-size">
+                                            <textarea id="txtQOptionC"></textarea>
+                                        </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="align-center">D</td>
+                                        <td class="no-padding">
+                                        <div class="input-control no-margin textarea full-size">
+                                            <textarea id="txtQOptionD"></textarea>
+                                        </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="cell size12">
+                            <label>Correct Answer:</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="cell size12">
+                            <div class="input-control select full-size">
+                                <select id="txtAnswer" <?php if($hascode) echo 'disabled' ?>>
+                                    <option value=""></option>
+                                    <?php if($QuestionType == 'True/False') { ?>
+                                    <option value="True" >True</option>
+                                    <option value="False" >False</option>
+                                    <?php } else { ?>
+                                    <option value="A" >A</option>
+                                    <option value="B" >B</option>
+                                    <option value="C" >C</option>
+                                    <option value="D" >D</option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <?php if(!$hascode) { ?>
+                    <div class="row flex-just-end">
+                        <div class="cell size3">
+                            <button id="btnSaveQuestion" class="button primary full-size">Save</button>
+                        </div>
+                    </div>
+                    <?php } ?>
+                </div>
+            </div>
+            <?php
         }
     }
     
