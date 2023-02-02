@@ -1,0 +1,11 @@
+[
+	 {
+		"code" : "tracker",
+		"name" : "server",
+		"host" : "172.17.0.1",
+		"username" : "nisupport",
+		"password" : "password",
+		"database" : "nisupport",
+		"port" : "3306"
+	}
+]
