@@ -17,7 +17,7 @@ $examid = $cn->escape($_GET['exam']);
 
 $file_name = '';
 
-ob_end_clean();
+if (ob_get_contents()) ob_end_clean();
 include "index.php";
 
 $cn->query("SELECT * FROM vw_exams_with_instructor WHERE id = $examid");

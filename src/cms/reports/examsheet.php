@@ -19,7 +19,7 @@
     $studentno = ''; $file_name = '';
     if(isset($_GET['stno'])) $studentno = $cn->escape($_GET['stno']);
     
-    ob_end_clean();
+    if (ob_get_contents()) ob_end_clean();
     include "index.php";
 
     if($studentno != '') {
