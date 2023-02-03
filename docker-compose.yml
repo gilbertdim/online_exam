@@ -18,11 +18,9 @@ services:
       - ${LOG_DIR-./logs/apache2}:/var/log/apache2
       - ${SSL_CERT-./ssl-cert-snakeoil.pem}:/etc/ssl/certs/ssl-cert-snakeoil.pem
       - ${SSL_KEY-./ssl-cert-snakeoil.key}:/etc/ssl/private/ssl-cert-snakeoil.key
-      - ${TRACKER_CONFIG-./config.json}:/var/www/tracker/config.json
-      - ${COMPOSER_JSON}:/var/www/tracker/composer.json
-      - ${COMPOSER_LOCK}:/var/www/tracker/composer.lock
-      - ${COMPOSER}/vendor:/var/www/tracker/vendor
-      - ${SERVICE_ACCOUNT}:/var/www/tracker/service-account.json
+      - ${COMPOSER_JSON}:/var/www/online_exam/composer.json
+      - ${COMPOSER_LOCK}:/var/www/online_exam/composer.lock
+      - ${COMPOSER}/vendor:/var/www/online_exam/vendor
     environment:
       APACHE_DOCUMENT_ROOT: ${APACHE_DOCUMENT_ROOT-/var/www/html/public_html}
       PMA_PORT: ${HOST_MACHINE_PMA_PORT}

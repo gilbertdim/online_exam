@@ -105,4 +105,4 @@ RUN a2enmod rewrite headers
 # Cleanup
 RUN rm -rf /usr/src/*
 
-WORKDIR /var/www/tracker/
+WORKDIR /var/www/online_exam/
