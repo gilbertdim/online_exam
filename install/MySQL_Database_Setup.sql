@@ -39,7 +39,7 @@ CREATE TABLE `ausers` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 INSERT INTO `online_exam`.`ausers` (`fname`, `lname`, `email`, `phone`, `addr1`, `city`, `username`, `pwd`, `isactive`, `usertype`)
-VALUE ('System', 'Administrator', '', '', '', '', 'admin', '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918', '1', '1');
+VALUE ('System', 'Administrator', '', '', '', '', 'admin', '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918', 1, '1');
 
 CREATE TABLE `exam_code` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -125,7 +125,7 @@ DELIMITER $$
 CREATE DEFINER=`exammanager`@`%` FUNCTION `fnGenerateExamCode`() RETURNS text CHARSET utf8
 BEGIN
 
-DECLARE valid_char VARCHAR(50);
+DECLARE valid_char VARCHAR(64);
 DECLARE ecode, newcode VARCHAR(50);
 DECLARE max_char INT;
 DECLARE good_code BIT;
