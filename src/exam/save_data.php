@@ -25,12 +25,21 @@
     }
     else if(isset($_POST['check_exam_code'])) {
         $exam_code = $cn->escape($_POST['check_exam_code']);
+        $examinee_code = $cn->escape($_POST['examinee_code']);
         
-        $cn->query("SELECT * FROM exam_code WHERE exam_code = '$exam_code' AND dtestart <= now() AND dteend > now()");
+        // $cn->query("SELECT * FROM exam_code WHERE exam_code = '$exam_code' AND dtestart <= now() AND dteend > now()");
+        $sql = "CALL sp_check_exam_examinee('$exam_code', '$examinee_code')";
+
+        $cn->query($sql);
         
         if($cn->hasrow()) {
-            echo 'proceed';
-            die();
+            $row = $cn->getrow();
+            if ($row['student_id'] > 0) {
+                $_SESSION['examinee_code'] = $examinee_code;
+                // echo 'proceed';
+                echo json_encode($row);
+                die();
+            }
         }
     }
     else if(isset($_POST['get_question'])) {
@@ -57,12 +66,25 @@
                             examcode : '<?php echo $examcode; ?>',
                             student : <?php echo $examinee; ?>,
                         },function(data){
-                            $.Notify({
-                                caption : 'Saving Complete',
-                                content : 'Answer was successfully saved',
-                                type : 'success',
-                                timeout : 6000
-                            });
+                            if (data > '') {
+                                ret = JSON.parse(data);
+                                if (ret.updated > 0) {
+                                    $.Notify({
+                                        caption : 'Saving Complete',
+                                        content : 'Answer was successfully saved',
+                                        type : 'success',
+                                        timeout : 6000
+                                    });
+                                } else {
+                                    $.Notify({
+                                        caption : 'Saving Failed',
+                                        content : 'Answer not saved',
+                                        type : 'alert',
+                                        timeout : 1000
+                                    });
+                                    location.href = 'http://online_exam.mpglobalservices.net';
+                                }
+                            }
                         }
                     );
                 } else {
@@ -113,7 +135,7 @@
                                     <option value="False" <?php echo ($row['answer'] == 'False' ? 'selected' : ''); ?>>False</option>
                                 <?php } ?>
                                 </select>
-                                <button class="button primary" id="btnSaveAnswer">Next <span class="mif-chevron-right icon"></span></button>
+                                <button class="button primary" id="btnSaveAnswer">Save <span class="mif-chevron-right icon"></span></button>
                             </div>
                         </div>
                     </div>
@@ -131,12 +153,23 @@
         $student = $cn->escape($_POST['student']);
         
         $cn->query("CALL sp_update_student_exam_answer($examid, '$examcode', $questionid, $student, '$answer')");
+
+        if ($cn->hasrow()) {
+            $row = $cn->getrow();
+            echo json_encode($row);
+        } else {
+            $_SESSION['examinee_code'] = '';
+        }
     }
     else if(isset($_POST['set_finish_time'])) {
-        $exam = $cn->escape($_POST['exam']);
-        $examcode = $cn->escape($_POST['examcode']);
-        $examinee = $cn->escape($_POST['examinee']);
-        
-        $cn->query("CALL sp_set_student_exam_finish_date($exam, '$examcode', $examinee)");
+        $_SESSION['examinee_code'] = '';
+        // $exam = $cn->escape($_POST['exam']);
+        // $examcode = $cn->escape($_POST['examcode']);
+        // $examinee = $cn->escape($_POST['examinee']);
+
+        // $cn->CloseRecordset();
+        // $sql = "CALL sp_set_student_exam_finish_date($exam, $examinee)";
+        // $cn->query($sql, true);
+        // $cn->query("CALL sp_set_student_exam_finish_date($exam, $examinee)", true);
     }
 ?>
