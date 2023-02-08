@@ -112,7 +112,7 @@
         function writelog($err) {
             $logfile = "error.php";
             $logpath = $_SERVER['DOCUMENT_ROOT'];
-            $logpath = $logpath . '/online_exam/db';
+            $logpath = $logpath . '/db';
             
             $today = date("m/d/Y H:m:s");
             $file = fopen($logpath . '/' . $logfile, "a");
