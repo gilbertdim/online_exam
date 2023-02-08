@@ -53,17 +53,7 @@
                             timeout : 6000
                         });
                     } else if ($(this)[0].text.trim() == 'Exit') {
-                        $.post(
-                            'save_data.php', {
-                                set_finish_time : '',
-                                exam : <?php echo $examid; ?>,
-                                examcode : '<?php echo $exam_code; ?>',
-                                examinee : $('#btnStSave')[0].value
-                            }, function(data) {
-                                window.location = '../';
-                            }
-                        );
-                        window.location = '../';
+                        metroDialog.open('#dlgExitExam');
                     } else {
                         $('.sidebar2>li').removeClass('active');
 
@@ -98,6 +88,20 @@
                         timeout : 6000
                     });
                 }
+            });
+
+            $('#btnExitExam').click(function () {
+                $.post(
+                    'save_data.php', {
+                        set_finish_time : '',
+                        exam : <?php echo $examid; ?>,
+                        examcode : '<?php echo $exam_code; ?>',
+                        examinee : $('#btnStSave')[0].value
+                    }, function(data) {
+                        window.location = '../';
+                    }
+                );
+                window.location = '../';
             });
             
             $('#btnStSave').click(function(){
@@ -304,6 +308,29 @@
             </div>
         </div>
     </div>
+
+    <div id="dlgExitExam" class="window success" data-role="dialog,draggable" data-drag-element=".window-caption" data-overlay="true" data-width="400">
+        <div class="window-caption bg-darkGray">
+            <span class="window-caption-title">Exit Exam</span>
+            <a href="javascript.void(0)" onclick="metroDialog.close('#dlgExitExam'); return false;" class="btn-close bg-red fg-white"></a>
+        </div>
+        <div class="window content fg-black">
+            <div class="flex-grid padding10">
+                <div class="row">
+                    <div class="cell auto-size">
+                        <p>Do you want to exit this exam?</p>
+                    </div>
+                </div>
+                <div class="row flex-just-sb" style="padding-top: 20px">
+                    <div class="cell size3"><button class="button full-size" onclick="metroDialog.close('#dlgExitExam')">Cancel</button></div>
+                    <div class="cell size3">
+                        <button id="btnExitExam" class="button danger full-size">Exit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>
 
