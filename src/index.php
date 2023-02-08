@@ -54,14 +54,21 @@
             
             $('#btnGoExam').click(function(){
                 
-                if($('#txtExamCode')[0].value != '') {
+                if($('#txtExamCode')[0].value != '' && $('#txtExamineeCode')[0].value != '' ) {
                     $.post(
                         'exam/save_data.php', {
-                        check_exam_code : $('#txtExamCode')[0].value
+                        check_exam_code : $('#txtExamCode')[0].value,
+                        examinee_code : $('#txtExamineeCode')[0].value
                         },function(data) {
-                            if(data.trim() == 'proceed') {
-                                window.location = 'exam/?id=' + $('#txtExamCode')[0].value;
-                            } else {
+                            valid_codes = false;
+                            if (data > '') {
+                                ret = JSON.parse(data);
+                                if (ret.student_id > 0) {
+                                    valid_codes = true;
+                                    window.location = 'exam/?id=' + $('#txtExamCode')[0].value + '&sid=' + ret.student_id;
+                                }
+                            }
+                            if (!valid_codes) {
                                 $.Notify({
                                     caption:'Invalid Exam code',
                                     content:'Exam code is either not found or the exam is not yet started or the exam has already expired.<br><br>Please coordinate with your exam coordinator regarding the exam details.',
@@ -74,7 +81,7 @@
                 } else {
                     $.Notify({
                         caption:'Online Exam',
-                        content:'Please enter exam code to start the exam.',
+                        content:'Please enter exam code and examinee code to start the exam.',
                         type:'alert',
                         timeout:6000
                     });
@@ -108,6 +115,18 @@
                         <div class="cell size12">
                             <div class="input-control text full-size">
                                 <input type="text" id="txtExamCode">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="cell size12">
+                            <label>Enter Examinee ID</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="cell size12">
+                            <div class="input-control text full-size">
+                                <input type="text" id="txtExamineeCode">
                                 <button id="btnGoExam" class="button primary"><span class="mif-enter"></span></button>
                             </div>
                         </div>
@@ -162,7 +181,8 @@
                     </div>
                     <div class="row">
                         <div class="cell size12">
-                            <button type="button" onclick="window.location = 'forgotpassword.php'" class="button full-size">Forgot Password</button>
+                            <!-- TODO: enable button when forgot password feature is working -->
+                            <!-- <button type="button" onclick="window.location = 'forgotpassword.php'" class="button full-size">Forgot Password</button> -->
                         </div>
                     </div>
                 </div>
