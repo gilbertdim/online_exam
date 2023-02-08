@@ -1,4 +1,8 @@
 <?php 
+    session_start();
+    if ((null == $_SESSION['examinee_code']) || ($_SESSION['examinee_code'] == '')) {
+        header('Location: ../');
+    }
     include "../db/clsconnection.php";
     $cn = New Connection;
 
@@ -7,6 +11,7 @@
     $cn->OpenConnection();
     
     $exam_code = $cn->escape($_GET['id']);
+    $sid = $cn->escape($_GET['sid']);
     
     $cn->query("SELECT * FROM exam_code WHERE exam_code = '$exam_code'");
     $ecode = $cn->getrow();
@@ -58,6 +63,7 @@
                                 window.location = '../';
                             }
                         );
+                        window.location = '../';
                     } else {
                         $('.sidebar2>li').removeClass('active');
 
