@@ -183,6 +183,7 @@
                     <li><a href="#" onclick="GetData('Users')"><span class="mif-users icon"></span>User Accounts</a></li>
                     <?php } ?>
                     <li class="active"><a href="#" onclick="GetData('Exam')"><span class="mif-files-empty icon"></span>My Exam List</a></li>
+                    <li class="active"><a href="#" onclick="GetData('Reset')"><span class="mif-user icon"></span>Reset Examinee Status</a></li>
                     <li><a class="fg-white" style="background-color: #ce352c" href="logout.php"><span class="mif-exit icon"></span> Log Out</a></li>
                 </ul>
             </div>

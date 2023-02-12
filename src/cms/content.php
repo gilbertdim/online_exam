@@ -9,6 +9,8 @@
             include 'exam/index.php';
         } else if ($_POST['getProfile'] == 'Users') {
             include 'users/index.php';
+        } else if ($_POST['getProfile'] == 'Reset') {
+            include 'reset/index.php';
         }
     }
 
