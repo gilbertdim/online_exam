@@ -122,10 +122,23 @@
             metroDialog.open('#frmSetCode');
         }
 
+        function pad(number, length){
+            var str = "" + number
+            while (str.length < length) {
+                str = '0'+str
+            }
+            return str
+        }
+
         function GetData(value) {
+            let offset = new Date().getTimezoneOffset();
+            offset = ((offset<0? '+':'-')+ // Note the reversed sign!
+                pad(parseInt(Math.abs(offset/60)), 2)+
+                pad(Math.abs(offset%60), 2))            
             $.post(
                 'content.php', {
-                    getProfile : value
+                    getProfile : value,
+                    offset : offset
                 }, function(data) {
                     $('#dvContent').html(data);
                 }

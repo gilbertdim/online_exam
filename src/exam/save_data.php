@@ -26,9 +26,10 @@
     else if(isset($_POST['check_exam_code'])) {
         $exam_code = $cn->escape($_POST['check_exam_code']);
         $examinee_code = $cn->escape($_POST['examinee_code']);
+        $cur_date_time =  $_POST['cur_date_time'];
         
         // $cn->query("SELECT * FROM exam_code WHERE exam_code = '$exam_code' AND dtestart <= now() AND dteend > now()");
-        $sql = "CALL sp_check_exam_examinee('$exam_code', '$examinee_code')";
+        $sql = "CALL sp_check_exam_examinee('$exam_code', '$examinee_code', '$cur_date_time')";
 
         $cn->query($sql);
         

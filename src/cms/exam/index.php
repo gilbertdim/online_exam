@@ -8,7 +8,8 @@
 
     $cn->OpenConnection();
     
-    $cn->query("SELECT * FROM vw_exams WHERE tech_id = $instr_id");
+    // $cn->query("SELECT * FROM vw_exams WHERE tech_id = $instr_id");
+    $cn->query("CALL sp_exam_list($instr_id)");
 ?>
    
 
@@ -46,12 +47,18 @@
                     timeout : 6000
                 })
             } else {
+                // const offset = new Date(dte).getTimezoneOffset()/60;
+                // console.log(offset);
+                // convert entered date time to utc
+                const dteutc = new Date(dte+'T'+tme).toISOString();
+                const sdteutc = dteutc.toString().substr(0,19).replace('T', ' ')
                 $.post(
                     'exam/save_data.php',{
                         genExamCode : '',
                         exam : examid,
                         dteDate : dte,
                         tmeTime : tme,
+                        dteutc : sdteutc,
                         numHour : hr
                     },function(data){
                         $.Notify({
@@ -133,7 +140,23 @@
                     <th style="width: 100px">Date Created</th>
                 </thead>
                 <tbody>
-                    <?php while($row = $cn->getrow()) { ?>
+                    <?php while($row = $cn->getrow()) {
+                        $offset = '0800';
+                        if (isset($_POST['offset'])) {
+                            $offset = $_POST['offset'];
+                        }
+                        $dte1 = new DateTime($row['dtestart'], new DateTimeZone('UTC'));
+                        $dte1->setTimeZone( new DateTimeZone($offset)) ;
+                        $dtestart = $dte1->format('m/d/Y h:i:s A');
+
+                        $dte1 = new DateTime($row['dteend'], new DateTimeZone('UTC'));
+                        $dte1->setTimeZone( new DateTimeZone($offset)) ;
+                        $dteend = $dte1->format('m/d/Y h:i:s A');
+                        
+                        $dte1 = new DateTime($row['dtecreated'], new DateTimeZone('UTC'));
+                        $dte1->setTimeZone( new DateTimeZone($offset)) ;
+                        $dtecreated = $dte1->format('m/d/Y h:i:s A');                        
+                        ?>
                     <tr ondblclick="window.open('exam/edit.php?id=<?php echo $row['id']; ?>', 'newwindow', 'width = 1000px, height = 500px');">
                         <td>
                         <a href="#" onclick="SetCode(<?php echo $row['id']; ?>)" title="Generate New Exam Voucher Code"><span class="mif-loop2 fg-blue"></span></a>
@@ -145,14 +168,14 @@
                         <td class="align-center disable-selection"><?php echo $row['cnt'] ?></td>
                         <td class="disable-selection">
                             <?php if($row['dtestart'] == '') { ?> 
-                            <?php } echo $row['dtestart']; ?>
+                            <?php } echo $dtestart; ?>
                         </td>
                         <td class="disable-selection">
                             <?php if($row['dteend'] == '') { ?>
-                            <?php } echo $row['dteend']; ?>
+                            <?php } echo $dteend; ?>
                         </td>
                         <td class="align-center disable-selection"><a href="#"><span class="mif-users icon"></span> <?php echo $row['examinees']; ?></a></td>
-                        <td class="disable-selection"><?php echo $row['dtecreated'] ?></td>
+                        <td class="disable-selection"><?php echo $dtecreated; ?></td>
                     </tr>
                     <?php } ?>
                 </tbody>

@@ -55,10 +55,16 @@
             $('#btnGoExam').click(function(){
                 
                 if($('#txtExamCode')[0].value != '' && $('#txtExamineeCode')[0].value != '' ) {
+                    // const dteutc = new Date(dte+'T'+tme).toISOString();
+                    const dteutc = new Date().toISOString();
+                    const sdteutc = dteutc.toString().substr(0,19).replace('T', ' ')
+                    console.log(sdteutc);
+                    debugger;
                     $.post(
                         'exam/save_data.php', {
                         check_exam_code : $('#txtExamCode')[0].value,
-                        examinee_code : $('#txtExamineeCode')[0].value
+                        examinee_code : $('#txtExamineeCode')[0].value,
+                        cur_date_time : sdteutc
                         },function(data) {
                             valid_codes = false;
                             if (data > '') {

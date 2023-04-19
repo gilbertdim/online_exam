@@ -440,9 +440,11 @@
         $examid = $cn->escape($_POST['exam']);
         $dteDate = $cn->escape($_POST['dteDate']);
         $tmeTime = $cn->escape($_POST['tmeTime']);
+        $dteutc = $_POST['dteutc'];
         $numHour = $cn->escape($_POST['numHour']);
 
-        $cn->query("CALL sp_generate_exam_code($examid, '$dteDate $tmeTime', $numHour, 0)");
+        // $cn->query("CALL sp_generate_exam_code($examid, '$dteDate $tmeTime', $numHour, 0)");
+        $cn->query("CALL sp_generate_exam_code($examid, '$dteutc', $numHour, 0)");
     }
     
     elseif (isset($_POST['get_examinee'])) {

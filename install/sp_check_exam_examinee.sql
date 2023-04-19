@@ -4,7 +4,8 @@ DELIMITER $$
 
 CREATE PROCEDURE sp_check_exam_examinee(
     IN $exam_code VARCHAR(100),
-    IN $examinee_code VARCHAR(100)
+    IN $examinee_code VARCHAR(100),
+    IN $cur_date_time VARCHAR(20)
 )
 BEGIN
 
@@ -13,8 +14,8 @@ BEGIN
     JOIN exam_code e ON e.exam_code = ec.exam_code
     SET status_code = 1
     WHERE e.exam_code = $exam_code
-    AND dtestart <= now() 
-    AND dteend > now() 
+    AND dtestart <= $cur_date_time
+    AND dteend > $cur_date_time
     AND ec.examinee_code = $examinee_code
     AND ec.status_code < 1;
 
