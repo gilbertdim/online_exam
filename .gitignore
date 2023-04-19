@@ -1,1 +1,5 @@
-db/config.php
+data/*
+composer/*
+src/db/config.php
+src/db/error.php
+logs/*

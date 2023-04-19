@@ -1,0 +1,13 @@
+[
+	 {
+		"code" : "tracker",
+		"name" : "server",
+		"host" : "172.20.0.2",
+		"username" : "nisupport",
+		"password" : "password",
+		"database" : "nisupport",
+		"port" : "3306",
+		"runtype" : "Dev",
+		"liveurl" : "https://trackertest.mpglobalservices.net"
+	}
+]
